@@ -40,9 +40,10 @@ jobs:
           if [ ! -d "node_modules" ]; then
             echo "node_modules directory not found. Installing dependencies..."
             npm install
+            npm install pm2@latest -g
           fi
 
           # Run any additional setup commands (e.g., restart services)
           # Example: Restarting a Node.js application
-          pm2 restart backend || npm run start
+          pm2 restart backend || pm2 start app.js
         EOF
