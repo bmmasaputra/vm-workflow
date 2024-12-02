@@ -3,7 +3,7 @@ name: Deploy to Compute Engine
 on:
   push:
     branches:
-      - main  # Change this to your deployment branch if needed
+      - master  # Change this to your deployment branch if needed
 
 jobs:
   deploy:
@@ -25,15 +25,24 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_SSH_USER }}@${{ secrets.GCE_INSTANCE_IP }} << 'EOF'
           set -e
+
           # Navigate to your project directory or clone the repository if not present
-          cd backend || git clone git@github.com:your-username/your-repo.git backend
+          if [ ! -d "backend" ]; then
+            git clone https://github.com/bmmasaputra/vm-workflow.git backend
+          fi
           cd backend
 
-          # Pull latest changes
+          # Pull the latest changes
           git reset --hard
-          git pull origin main
+          git pull origin master
 
-          # Run any additional setup commands (e.g., npm install, restart services)
+          # Check if 'node_modules' directory exists, install dependencies if missing
+          if [ ! -d "node_modules" ]; then
+            echo "node_modules directory not found. Installing dependencies..."
+            npm install
+          fi
+
+          # Run any additional setup commands (e.g., restart services)
           # Example: Restarting a Node.js application
           pm2 restart backend || npm run start
         EOF
