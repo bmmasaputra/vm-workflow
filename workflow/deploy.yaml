@@ -26,8 +26,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_SSH_USER }}@${{ secrets.GCE_INSTANCE_IP }} << 'EOF'
           set -e
           # Navigate to your project directory or clone the repository if not present
-          cd /path/to/your/project || git clone git@github.com:your-username/your-repo.git /path/to/your/project
-          cd /path/to/your/project
+          cd backend || git clone git@github.com:your-username/your-repo.git backend
+          cd backend
 
           # Pull latest changes
           git reset --hard
@@ -35,5 +35,5 @@ jobs:
 
           # Run any additional setup commands (e.g., npm install, restart services)
           # Example: Restarting a Node.js application
-          pm2 restart app-name || pm2 start index.js --name app-name
+          pm2 restart backend || npm run start
         EOF
