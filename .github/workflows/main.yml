@@ -26,24 +26,14 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_SSH_USER }}@${{ secrets.GCE_INSTANCE_IP }} << 'EOF'
           set -e
 
-          # Navigate to your project directory or clone the repository if not present
-          if [ ! -d "backend" ]; then
-            git clone https://github.com/bmmasaputra/vm-workflow.git backend
-          fi
           cd backend
-
+          
           # Pull the latest changes
-          git reset --hard
           git pull origin master
-
-          # Check if 'node_modules' directory exists, install dependencies if missing
-          if [ ! -d "node_modules" ]; then
-            echo "node_modules directory not found. Installing dependencies..."
-            npm install
-            npm install pm2@latest -g
-          fi
-
+          
+          npm install
+          
           # Run any additional setup commands (e.g., restart services)
           # Example: Restarting a Node.js application
-          pm2 restart backend || pm2 start app.js
+          pm2 restart backend || npm run start
         EOF
