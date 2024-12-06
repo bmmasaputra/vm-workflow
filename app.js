@@ -14,7 +14,7 @@ app.use(cors({
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
-    res.send("<h1 style='font-family: sans-serif; margin: 50px; font-weight: 400'>Hi Bima! Welcome to VM Workflow</h1>");
+    res.send("<h1 style='font-family: sans-serif; margin: 50px; font-weight: 400'>Hi Fitizen! Welcome to VM Workflow</h1>");
 })
 
 app.listen(port, () => {
